@@ -74,10 +74,36 @@ public class Code01_SelectionSort {
     }
 
 
-    public static void quickSort(int[] arr){
-        if (arr == null || arr.length < 2) {
+    /**
+     * 快速排序主要思想
+     * 找到第一个元素所在的绝对位置，将左右两部分分别调用快排。比元素大的放右边，小的放左边
+     * @param arr
+     */
+    public static void quickSort(int[] arr, int low, int high){
+        if (low >= high) {
             return;
         }
+        int flg = arr[low];
+        int i = low;
+        int j = high;
+
+        while(i < j){
+            while(arr[j] >= flg && i < j){ // 先找到应该在flg左边的元素
+                j--;
+            }
+            while(arr[i] <= flg && i < j){
+                i++;
+            }
+            if(i < j) {
+                swap(arr, i, j);
+            }
+        }
+
+        // i或j位置与flg交换
+        swap(arr, i, low);
+
+        quickSort(arr,low,i-1);
+        quickSort(arr,i+1,high);
     }
 
 
@@ -93,7 +119,8 @@ public class Code01_SelectionSort {
             int[] arr2 = copyArray(arr1);
             //selectionSort(arr1);
             //bubbleSort(arr1);
-            insertionSort(arr1);
+            //insertionSort(arr1);
+            quickSort(arr1, 0, arr1.length - 1);
             comparator(arr2); // 调用官方排序算法
             if(!isEqual(arr1, arr2)){
                 succeed = false;
@@ -108,7 +135,8 @@ public class Code01_SelectionSort {
         printArray(arr);
         //selectionSort(arr);
         //bubbleSort(arr);
-        insertionSort(arr);
+        //insertionSort(arr);
+        quickSort(arr, 0, arr.length - 1);
         printArray(arr);
     }
 
